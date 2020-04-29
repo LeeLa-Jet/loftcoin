@@ -1,10 +1,8 @@
-package com.loftschool.android.loftcoin.ui.main;
+package com.loftschool.android.loftcoin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-
-import com.loftschool.android.loftcoin.R;
 
 public class MainActivity extends AppCompatActivity {
 
