@@ -1,5 +1,6 @@
 package com.loftschool.android.loftcoin.ui.wallets;
 
+
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.loftschool.android.loftcoin.R;
 import com.loftschool.android.loftcoin.databinding.FragmentWalletsBinding;
-import com.loftschool.android.loftcoin.ui.welcome.WelcomeAdapter;
 
 public class WalletsFragment extends Fragment {
 
@@ -43,9 +43,9 @@ public class WalletsFragment extends Fragment {
         binding.recycler.setPadding(padding, 0, padding, 0);
         binding.recycler.setClipToPadding(false);
 
+        binding.recycler.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
         binding.recycler.addOnScrollListener(new CarouselScroller());
 
-        binding.recycler.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
         binding.recycler.setAdapter(new WalletsAdapter());
         binding.recycler.setVisibility(View.VISIBLE);
         binding.walletCard.setVisibility(View.GONE);
@@ -64,11 +64,12 @@ public class WalletsFragment extends Fragment {
             for (int i = 0; i < recyclerView.getChildCount(); ++i) {
                 final View child = recyclerView.getChildAt(i);
                 final int childCenterX = (child.getLeft() + child.getRight()) / 2;
-                final float childOffset = Math.abs(centerX - childCenterX) / (float) centerX; // 1.2, 0, 1.2
-                float factor = (float) (Math.pow(0.85, childOffset)); // 2^1/1.2, 2^0, 2^// 0.4, 1, 0.4
+                final float childOffset = Math.abs(centerX - childCenterX) / (float) centerX;
+                float factor = (float) (Math.pow(0.85, childOffset));
                 child.setScaleX(factor);
                 child.setScaleY(factor);
             }
         }
     }
+
 }
