@@ -16,7 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CurrencyRepoImpl implements CurrencyRepo {
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
+class CurrencyRepoImpl implements CurrencyRepo {
 
     private static final String KEY_CURRENCY = "currency";
 
@@ -24,7 +28,8 @@ public class CurrencyRepoImpl implements CurrencyRepo {
 
     private SharedPreferences prefs;
 
-    public CurrencyRepoImpl(@NonNull Context context) {
+    @Inject
+    CurrencyRepoImpl(@NonNull Context context) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
         availableCurrencies.put("USD", Currency.create("$", "USD", context.getString(R.string.usd)));
         availableCurrencies.put("EUR", Currency.create("E", "EUR", context.getString(R.string.eur)));
@@ -33,7 +38,7 @@ public class CurrencyRepoImpl implements CurrencyRepo {
 
     @NonNull
     @Override
-    public MutableLiveData<List<Currency>> availableCurrencies() {
+    public LiveData<List<Currency>> availableCurrencies() {
         final MutableLiveData<List<Currency>> liveData = new MutableLiveData<>();
         liveData.setValue(new ArrayList<>(availableCurrencies.values()));
         return liveData;
@@ -41,20 +46,16 @@ public class CurrencyRepoImpl implements CurrencyRepo {
 
     @NonNull
     @Override
-    public CurrencyLiveData currency() {
+    public LiveData<Currency> currency() {
         return new CurrencyLiveData();
     }
 
     @Override
-    public void updateCurrency(@NonNull java.util.Currency currency) {
-
-    }
-
     public void updateCurrency(@NonNull Currency currency) {
         prefs.edit().putString(KEY_CURRENCY, currency.code()).apply();
     }
 
-    class CurrencyLiveData extends LiveData<Currency> implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public class CurrencyLiveData extends LiveData<Currency> implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         @Override
         protected void onActive() {
